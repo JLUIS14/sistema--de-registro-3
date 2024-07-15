@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    // Arreglo para almacenar los datos de los empleados y sus horas extras
+    int empleados[] = {200, 40, 40, 150, 20, 10, 20, 300, 20, 30, 10, 20};
+
+    // calculamos el tamaño del array para poder iterar (considernado que todos son enteros)
+    const int N = sizeof(empleados) / sizeof(empleados[0]);
+
+    // Imprimir el arreglo total
+    cout << "Arreglo total: ";
+    for (int i = 0; i < N; i++) {
+        cout << empleados[i] << " ";
+    }
+    cout << "\n" << endl;
+
+    // Determinar el número de empleados (valores con 3 dígitos)
+    int numEmpleados = 0;
+    for (int i = 0; i < N; i++) {
+        if (empleados[i] >= 100) {
+            numEmpleados++;
+        }
+    }
+
+    // Crear un arreglo para almacenar la suma de horas extras de cada empleado
+    int horas_extras[numEmpleados] = {0};
+
+    // Calcular la suma de horas extras para cada empleado
+    int empleadoIndex = -1;
+    for (int i = 0; i < N; i++) {
+        if (empleados[i] >= 100) {
+            empleadoIndex++;
+        } else {
+            horas_extras[empleadoIndex] += empleados[i];
+        }
+    }
+
+    // Imprimir las horas extras por empleado y calcular el total de horas extras
+    double totalHorasExtras = 0;
+    for (int i = 0; i < numEmpleados; i++) {
+        cout << "EMPLEADO " << (i + 1) << ", horas extra = " << horas_extras[i] << endl;
+        totalHorasExtras += horas_extras[i];
+    }
+
+    // Calcular el promedio de horas extras
+    double promedioHorasExtras = totalHorasExtras / numEmpleados;
+
+    // Imprimir el promedio de horas extras
+    cout << "\nPROMEDIO DE HORAS EXTRAS = " << promedioHorasExtras << endl;
+
+    // TEST
+    // Crear un nuevo arreglo excluyendo a los empleados cuyas horas extras superan el promedio
+    int nuevoArreglo[N] = {0};
+    int nuevoTamano = 0;
+
+    empleadoIndex = -1;
+    // Recorremos el arreglo empleados
+    for (int i = 0; i < N; i++) {
+        // Si el valor actual es un código de empleado (valor de 3 dígitos)
+        if (empleados[i] >= 100) {
+            empleadoIndex++;
+            // Si las horas extras del empleado actual son menores o iguales al promedio
+            if (horas_extras[empleadoIndex] <= promedioHorasExtras) {
+                // Añadimos el código del empleado al nuevo arreglo
+                nuevoArreglo[nuevoTamano++] = empleados[i];
+            }
+        } else {
+            // Si el valor actual es una hora extra y las horas extras del empleado actual son menores o iguales al promedio
+            if (horas_extras[empleadoIndex] <= promedioHorasExtras) {
+                // Añadimos la hora extra al nuevo arreglo
+                nuevoArreglo[nuevoTamano++] = empleados[i];
+            }
+        }
+    }
+
+    // Imprimir el nuevo arreglo después de la eliminación
+    cout << "\nArreglo después de la eliminación: ";
+    for (int i = 0; i < nuevoTamano; i++) {
+        cout << nuevoArreglo[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
